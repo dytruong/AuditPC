@@ -1,11 +1,9 @@
-# Input username
-$username = read-host "Your name";
-$username = $username.Replace(' ','')
-$username = $username.ToLower()
-
 # Function get specification
 function specs {
-    param($user)
+    # Input username
+    $username_real = read-host "Your name";
+    $username = $username_real.Replace(' ','')
+    $username = $username.ToLower()    
     $cpu = (Get-CimInstance -ClassName CIM_Processor).Name;
     $ram = ((Get-ComputerInfo).OsTotalVisibleMemorySize)/0.001Gb;
     $rounding_ram = ([math]::Truncate($ram))+1;
@@ -24,7 +22,8 @@ function specs {
     }
     write-host "----------------------------"
     $details = @{
-        "Username" = $user
+        "ID" = $username
+        "Username" = $username_real
         "cpu" = $cpu
         "ram" = $ram_info
         "GPU" = $GPU 
@@ -39,8 +38,8 @@ function specs {
         }else{
             $location = "C";}
     }
-    $result | Export-Csv -Path "${location}:\$user.csv" -NoTypeInformation
+    $result | Export-Csv -Path "${location}:\$username.csv" -NoTypeInformation
     Invoke-Item "${location}:\"
 }
 
-specs -user $username
+specs
