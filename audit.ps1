@@ -18,9 +18,8 @@ function specs {
         $pd_type = $pdisk_type[$i]
         $pd_size = $pdisk_size_1[$i]
         $rounding_size = [math]::round($pd_size/1Gb,2)
-        $pdisk_info += "{0}-{1}Gb; " -f $pd_type,$rounding_size
+        $pdisk_info += "{0}-{1}Gb;" -f $pd_type,$rounding_size
     }
-    write-host "----------------------------"
     $details = @{
         "ID" = $username
         "Username" = $username_real
@@ -40,6 +39,7 @@ function specs {
     }
     $result | Export-Csv -Path "${location}:\$username.csv" -NoTypeInformation
     Invoke-Item "${location}:\"
+    write-host "File ${username}.csv was saved in ${location}" -ForegroundColor Green
 }
 
 specs
