@@ -33,12 +33,14 @@ function specs {
     $D = (Get-Partition).DriveLetter
     foreach ($p_D in $D){
         if ($p_D -eq "D"){
-            $location = "$p_D"
+            $location = "D:\"
         }else{
-            $location = "C";}
+            $location = "C:\";}
     }
-    $result | Export-Csv -Path "${location}:\$username.csv" -NoTypeInformation
-    Invoke-Item "${location}:\"
+    New-Item -path $location -Name "Audit_PC" -ItemType "directory" -Force
+    $location = "${location}Audit_PC"
+    $result | Export-Csv -Path "${location}\$username.csv" -NoTypeInformation
+    Invoke-Item "${location}"
     write-host "File ${username}.csv was saved in ${location}" -ForegroundColor Green
 }
 
